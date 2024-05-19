@@ -118,7 +118,7 @@ def ventana_principal():
                 pygame.draw.rect(ventana, color, pygame.Rect(col * cell_size + offset_x, row * cell_size + offset_y, cell_size, cell_size))
                 pygame.draw.rect(ventana, color_negro, pygame.Rect(col * cell_size + offset_x, row * cell_size + offset_y, cell_size, cell_size), 1)
 
-    mapa1 = editor("matriz_base.txt", "Eduardo", "en proceso")
+    mapa1 = editor("Project stuff/matriz_base.txt", "Eduardo", "en proceso")
     mapa_base = mapa1.matriz()
     mapa_base_trans = mapa1.transpuesta()
     dibujar_matriz(mapa_base)
