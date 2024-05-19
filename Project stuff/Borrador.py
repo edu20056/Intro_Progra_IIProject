@@ -1,9 +1,7 @@
 import pygame
 from Editor import editor
 #import time
-#CAMBIO
-#Pull
-#Cambio3
+#Listo
 
 #____________________________________________Funciones de ventanas secundarias__________________________________________
 def ventana_sec1():
