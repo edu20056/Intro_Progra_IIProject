@@ -3,6 +3,7 @@ from Editor import editor
 #import time
 #CAMBIO
 #Pull
+#Cambio3
 
 #____________________________________________Funciones de ventanas secundarias__________________________________________
 def ventana_sec1():
