@@ -1,8 +1,10 @@
 import pygame
 from Editor import editor
 #import time
-#CAMBIO
 
+
+#____________________________________________Variables globales_________________________________________________________
+#global botones
 #____________________________________________Funciones de ventanas secundarias__________________________________________
 def ventana_sec1():
     #Altura y ancho
@@ -92,7 +94,24 @@ def ventana_principal():
     boton = pygame.Rect(200,650, 500,100) #x , y , altura, ancho
     font = pygame.font.SysFont("Times New Roman", 48)
     button_text = font.render("Abrir ventana secundaria", True, texto_color)
+    
+    #Funcion para cambiar color de matriz al apretarse.
+    def cambio_matriz(mapa, index):
+        for row in range(len(mapa)):
+            for col in range(len(mapa[row])):
+                mapa[row][col] = index
+        return mapa
 
+
+    #Funcion para detectar click en boton
+    def detectar_botones(botones):
+        pos_mouse = pygame.mouse.get_pos()
+        for i, boton in enumerate(botones):
+            if boton.collidepoint(pos_mouse):
+                return i
+        return None
+    
+    #Crea botones en la pantalla
     def crear_botones_colores():
         botones = []
         x_start = 50  # Posición inicial x
@@ -101,13 +120,13 @@ def ventana_principal():
 
         for i in range(1,10):
             x = x_start + (i - 1) * spacing
-            rec_base = pygame.Rect(x, y, 50, 50)
+            rec_base = pygame.Rect(x, y, 50, 50)    
             pygame.draw.rect(ventana,colors[i], rec_base)
             pygame.draw.rect(ventana, color_negro, rec_base, 1)
             botones.append(rec_base)
 
         return botones
-    crear_botones_colores()
+    
     def dibujar_matriz(map):
         cell_size = 40  # Tamaño de cada celda
         offset_x = 50  # Offset en x para centrar la matriz
@@ -118,11 +137,9 @@ def ventana_principal():
                 pygame.draw.rect(ventana, color, pygame.Rect(col * cell_size + offset_x, row * cell_size + offset_y, cell_size, cell_size))
                 pygame.draw.rect(ventana, color_negro, pygame.Rect(col * cell_size + offset_x, row * cell_size + offset_y, cell_size, cell_size), 1)
 
+
+    #Se deja mapa1 afuera de while para que se pueda modificar la lista mapa_base
     mapa1 = editor("Project stuff/matriz_base.txt", "Eduardo", "en proceso")
-    mapa_base = mapa1.matriz()
-    mapa_base_trans = mapa1.transpuesta()
-    dibujar_matriz(mapa_base)
-    #dibujar_matriz(mapa_base_trans)
 
     running = True
     while running:
@@ -137,15 +154,28 @@ def ventana_principal():
         # Dibuja el borde del botón
         pygame.draw.rect(ventana, color_negro, boton, 1)
 
+        #Mapa dentro de while para que se vaya actualizando
+        mapa_base = mapa1.matriz()
+        mapa_base_trans = mapa1.transpuesta()
+        dibujar_matriz(mapa_base)
+
+
         #Colocar texto
         texto_boton = button_text.get_rect(center = boton.center)
         ventana.blit(button_text, texto_boton)
+
+        crear_botones_colores()
 
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if boton.collidepoint(pos_mouse):
                     running = False
                     ventana_sec1()
+                else:
+                    botones = crear_botones_colores()
+                    boton_index = detectar_botones(botones)
+                    if boton_index is not None:
+                        mapa_base = cambio_matriz(mapa_base, boton_index + 1)
 #______________________________________________Inicio pygame____________________________________________________________
 #Inicio pygame
 pygame.init()
