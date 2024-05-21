@@ -4,7 +4,8 @@ from Editor import editor
 
 
 #____________________________________________Variables globales_________________________________________________________
-#global botones
+global n
+n = 0
 #____________________________________________Funciones de ventanas secundarias__________________________________________
 def ventana_sec1():
     #Altura y ancho
@@ -96,20 +97,28 @@ def ventana_principal():
     button_text = font.render("Abrir ventana secundaria", True, texto_color)
     
     #Funcion para cambiar color de matriz al apretarse.
-    def cambio_matriz(mapa, index):
-        for row in range(len(mapa)):
-            for col in range(len(mapa[row])):
-                mapa[row][col] = index
+    def cambio_matriz(mapa):
+        global n
+        pos_mouse = pygame.mouse.get_pos()
+        matriz, coords = dibujar_matriz(mapa) 
+
+        for rec in matriz:
+            if rec.collidepoint(pos_mouse):
+                i = matriz.index(rec)
+                row, col = coords[i]
+                mapa[row][col] = n
+                return mapa
         return mapa
 
-
+        
     #Funcion para detectar click en boton
     def detectar_botones(botones):
+        global n
         pos_mouse = pygame.mouse.get_pos()
         for i, boton in enumerate(botones):
             if boton.collidepoint(pos_mouse):
-                return i
-        return None
+                print(i + 1)
+                n = i + 1 #Uno más ya que en el diccionario 0 es blanco que debería ser como el borrador.
     
     #Crea botones en la pantalla
     def crear_botones_colores():
@@ -128,18 +137,24 @@ def ventana_principal():
         return botones
     
     def dibujar_matriz(map):
+        lista_matriz = [] #Lista con elementos de matriz
+        cords_matriz = [] #Lista con coordenadas 
         cell_size = 40  # Tamaño de cada celda
         offset_x = 50  # Offset en x para centrar la matriz
         offset_y = 150  # Offset en y para centrar la matriz
         for row in range(12):
             for col in range(12):
                 color = colors[map[row][col]]
-                pygame.draw.rect(ventana, color, pygame.Rect(col * cell_size + offset_x, row * cell_size + offset_y, cell_size, cell_size))
+                rec = pygame.draw.rect(ventana, color, pygame.Rect(col * cell_size + offset_x, row * cell_size + offset_y, cell_size, cell_size))
                 pygame.draw.rect(ventana, color_negro, pygame.Rect(col * cell_size + offset_x, row * cell_size + offset_y, cell_size, cell_size), 1)
+                cords_matriz.append([row, col])
+                lista_matriz.append(rec)
 
+        return lista_matriz, cords_matriz
 
     #Se deja mapa1 afuera de while para que se pueda modificar la lista mapa_base
-    mapa1 = editor("Project stuff/matriz_base.txt", "Eduardo", "en proceso")
+    mapa1 = editor("Project stuff/matriz_base.txt", "Eduardo", "en proceso") 
+    mapa_base = mapa1.matriz()
 
     running = True
     while running:
@@ -155,16 +170,14 @@ def ventana_principal():
         pygame.draw.rect(ventana, color_negro, boton, 1)
 
         #Mapa dentro de while para que se vaya actualizando
-        mapa_base = mapa1.matriz()
-        mapa_base_trans = mapa1.transpuesta()
         dibujar_matriz(mapa_base)
-
 
         #Colocar texto
         texto_boton = button_text.get_rect(center = boton.center)
         ventana.blit(button_text, texto_boton)
 
         crear_botones_colores()
+   
 
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -173,9 +186,8 @@ def ventana_principal():
                     ventana_sec1()
                 else:
                     botones = crear_botones_colores()
-                    boton_index = detectar_botones(botones)
-                    if boton_index is not None:
-                        mapa_base = cambio_matriz(mapa_base, boton_index + 1)
+                    detectar_botones(botones)
+                    mapa_base = cambio_matriz(mapa_base)
 #______________________________________________Inicio pygame____________________________________________________________
 #Inicio pygame
 pygame.init()
