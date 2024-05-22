@@ -6,7 +6,7 @@ class editor:
         self.creator = creator
         self.state = state
 
-    def matriz(self):
+    def cargar_matriz(self):
         with open(self.txt, "r") as file:
             result = []
             for line in file:

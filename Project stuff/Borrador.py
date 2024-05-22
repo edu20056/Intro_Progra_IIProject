@@ -6,6 +6,152 @@ from Editor import editor
 #____________________________________________Variables globales_________________________________________________________
 global n
 n = 0
+#____________________________________________Menú de juego______________________________________________________________
+def ventana_menu():
+        #Altura y ancho
+    width, height = 600,600
+
+    #Ventana secundaria
+    ventana = pygame.display.set_mode((width,height))
+    ventana.fill((0,0,255))
+
+    # Nombre ventana secundaria
+    pygame.display.set_caption("Menú de aplicación")
+
+    #Colores
+    colors = {
+        0: (255, 255, 255),  # Blanco
+        1: (104,95,109), #Gris
+        2: (0, 255, 0),  #Verde
+        3: (248,12,12), #Rojo
+        4: (237,248,12), #Amarillo
+        5: (12,237,248), #Celeste
+        6: (12,41,248), #Azul
+        7: (151,9,242), #Morado
+        8: (253, 19, 168),  #Rosado
+        9: (0, 0, 0),  #Negro
+    }
+
+    def botones_menu():
+        bot = []
+        x = 120
+        y_in = 10
+        for i in range(3):
+            y = y_in + i * 200
+            rec = pygame.Rect(x , y, 350,150 )
+            pygame.draw.rect(ventana,colors[7], rec)
+            pygame.draw.rect(ventana, colors[9], rec, 1)
+
+            bot.append(rec)
+        return bot
+    botones = botones_menu()
+    running = True
+    while running:
+        lista_textos = ["Nuevo dibujo", "Cargar dibujo", "Salir de aplicacion"]
+        font = pygame.font.SysFont("Times New Roman", 48)
+        pos_mouse = pygame.mouse.get_pos()
+        for boton in botones:
+            if boton.collidepoint(pos_mouse):
+                pygame.draw.rect(ventana, colors[4], boton)
+            else:
+                pygame.draw.rect(ventana,colors[7], boton)
+                
+        for i in range(3): #Escribir los textos 
+            bot_tex = font.render(lista_textos[i], True, colors[9])
+            texto_boton = bot_tex.get_rect(center = botones[i].center)
+            ventana.blit(bot_tex, texto_boton)
+
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                for i, boton in enumerate(botones):
+                    if boton.collidepoint(pos_mouse):
+                        if i == 0:
+                            direccion = "Project stuff/matriz_base.txt"
+                            cargar(direccion) # type: ignore #Abrir pantalla de dibujo con matriz limpia (matriz_base)
+                        elif i == 1:
+                            print("Aveces") #Abrir ventana donde se podrá escribir un texto que indique la posicion de la matriz que se desee cargar.
+                        else:
+                            running = False
+
+        pygame.display.flip()
+
+
+
+#____________________________________________Funcion Escribir Matriz en txt______________________________________________
+def escribir_matriz_en_txt(matriz, nombre_archivo):
+    with open(nombre_archivo, 'w') as archivo:
+        for fila in matriz:
+            linea = ', '.join(map(str, fila))
+            linea_formateada = f'[{linea}]'
+            archivo.write(linea_formateada + '\n')
+#____________________________________________Ventana Cargar juego__________________________________________________________FALTA
+
+
+#____________________________________________Ventana Nuevo Juego________________________________________________________
+def cargar(direccion):
+    width, height = 600, 400
+
+    ventana = pygame.display.set_mode((width, height))
+    pygame.display.set_caption('Escribir nombre')
+    font = pygame.font.SysFont("Times New Roman", 32)
+    
+    # Colores
+    colors = {
+        0: (255, 255, 255),  # Blanco
+        1: (104, 95, 109),   # Gris
+        2: (0, 255, 0),      # Verde
+        3: (248, 12, 12),    # Rojo
+        4: (237, 248, 12),   # Amarillo
+        5: (12, 237, 248),   # Celeste
+        6: (12, 41, 248),    # Azul
+        7: (151, 9, 242),    # Morado
+        8: (253, 19, 168),   # Rosado
+        9: (0, 0, 0),        # Negro
+    }
+
+    text_box = pygame.Rect(100, 100, 400, 50)
+    active = False
+    color = colors[0]
+    text = ''
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # Si el usuario hace clic en la caja de entrada
+                if text_box.collidepoint(event.pos):
+                    active = not active
+                else:
+                    active = False
+                color = colors[5] if active else colors[0]
+            if event.type == pygame.KEYDOWN:
+                if active:
+                    if event.key == pygame.K_RETURN:
+                        # Guardar el texto en una variable
+                        texto_ingresado = text
+                        ventana_principal(direccion, texto_ingresado)
+                        running = False  # Salir del bucle después de presionar Enter
+                    elif event.key == pygame.K_BACKSPACE:
+                        text = text[:-1]
+                    else:
+                        text += event.unicode
+
+        # Rellenar la ventana
+        ventana.fill((128, 53, 89))
+        
+        # Dibujar la caja de texto
+        pygame.draw.rect(ventana, color, text_box, 2)
+        
+        # Renderizar el texto
+        txt_surface = font.render(text, True, colors[9])
+        ventana.blit(txt_surface, (text_box.x + 5, text_box.y + 5))
+        
+        pygame.display.flip()
+
+
 #____________________________________________Funciones de ventanas secundarias__________________________________________
 def ventana_sec1():
     #Altura y ancho
@@ -34,7 +180,7 @@ def ventana_sec1():
     #Boton de pygame. Configura la fuente y el texto del botón
     boton = pygame.Rect(100,200, 400,100) #x , y , altura, ancho
     font = pygame.font.SysFont("Times New Roman", 30)
-    button_text = font.render("Volver menú principal", True, texto_color)
+    button_text = font.render("Salir", True, texto_color)
 
     running = True
     while running:
@@ -57,10 +203,10 @@ def ventana_sec1():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if boton.collidepoint(pos_mouse):
                     running = False
-                    ventana_principal()
+                    #ventana_principal()
 
 #____________________________________________Ventana Principal__________________________________________________________
-def ventana_principal():
+def ventana_principal(direccion, nombre):
     #Altura y ancho
     width, heigth = 800,800
 
@@ -68,7 +214,7 @@ def ventana_principal():
     ventana = pygame.display.set_mode((width,heigth))
 
     #Nombre ventana
-    pygame.display.set_caption("Menú de aplicación")
+    pygame.display.set_caption("Dibujo")
 
     #Colores de objetos.
     ventana.fill((214, 88, 180)) #Color de ventana de fondo
@@ -92,9 +238,9 @@ def ventana_principal():
     }
 
     #Boton de pygame. Configura la fuente y el texto del botón
-    boton = pygame.Rect(200,650, 500,100) #x , y , altura, ancho
-    font = pygame.font.SysFont("Times New Roman", 48)
-    button_text = font.render("Abrir ventana secundaria", True, texto_color)
+    boton = pygame.Rect(450,650, 300,100) #x , y , altura, ancho
+    font = pygame.font.SysFont("Times New Roman", 40)
+    button_text = font.render("Guardar dibujo y salir.", True, texto_color)
     
     #Funcion para cambiar color de matriz al apretarse.
     def cambio_matriz(mapa):
@@ -117,17 +263,17 @@ def ventana_principal():
         pos_mouse = pygame.mouse.get_pos()
         for i, boton in enumerate(botones):
             if boton.collidepoint(pos_mouse):
-                print(i + 1)
-                n = i + 1 #Uno más ya que en el diccionario 0 es blanco que debería ser como el borrador.
+                print(i)
+                n = i 
     
     #Crea botones en la pantalla
     def crear_botones_colores():
         botones = []
-        x_start = 50  # Posición inicial x
+        x_start = 110  # Posición inicial x
         y = 70  # Posición fija y
         spacing = 70  # Espaciado entre botones
-
-        for i in range(1,10):
+        
+        for i in range(0,10):
             x = x_start + (i - 1) * spacing
             rec_base = pygame.Rect(x, y, 50, 50)    
             pygame.draw.rect(ventana,colors[i], rec_base)
@@ -136,6 +282,10 @@ def ventana_principal():
 
         return botones
     
+    #Esta funcion contendrá botones para crear circulo, cuadradro, el borrador (color blanco), zoom in , zoom out, transpuesta
+    def botones_funcionales():
+        bot_funcionales = [] 
+
     def dibujar_matriz(map):
         lista_matriz = [] #Lista con elementos de matriz
         cords_matriz = [] #Lista con coordenadas 
@@ -153,8 +303,8 @@ def ventana_principal():
         return lista_matriz, cords_matriz
 
     #Se deja mapa1 afuera de while para que se pueda modificar la lista mapa_base
-    mapa1 = editor("Project stuff/matriz_base.txt", "Eduardo", "en proceso") 
-    mapa_base = mapa1.matriz()
+    mapa1 = editor(direccion, nombre, "en proceso") 
+    mapa_base = mapa1.cargar_matriz()
 
     running = True
     while running:
@@ -178,12 +328,12 @@ def ventana_principal():
 
         crear_botones_colores()
    
-
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if boton.collidepoint(pos_mouse):
                     running = False
-                    ventana_sec1()
+                    escribir_matriz_en_txt(mapa_base, nombre + ".txt")
+                    pygame.QUIT()
                 else:
                     botones = crear_botones_colores()
                     detectar_botones(botones)
@@ -192,5 +342,5 @@ def ventana_principal():
 #Inicio pygame
 pygame.init()
 
-#Llamada ventana principal
-ventana_principal()
+#Llamada ventana de menu
+ventana_menu()
