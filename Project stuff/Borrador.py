@@ -69,14 +69,14 @@ def ventana_menu():
                         if i == 0:
                             direccion = "Project stuff/matriz_base.txt"
                             cargar(direccion) # type: ignore #Abrir pantalla de dibujo con matriz limpia (matriz_base)
+                            running = False
                         elif i == 1:
                             print("Aveces") #Abrir ventana donde se podrá escribir un texto que indique la posicion de la matriz que se desee cargar.
+                            running = False
                         else:
                             running = False
 
         pygame.display.flip()
-
-
 
 #____________________________________________Funcion Escribir Matriz en txt______________________________________________
 def escribir_matriz_en_txt(matriz, nombre_archivo):
@@ -88,8 +88,6 @@ def escribir_matriz_en_txt(matriz, nombre_archivo):
             archivo.write(linea_formateada + '\n')
 
 #____________________________________________Ventana Cargar juego__________________________________________________________FALTA
-
-
 #____________________________________________Ventana Nuevo Juego________________________________________________________
 def cargar(direccion):
     width, height = 600, 400
@@ -134,8 +132,8 @@ def cargar(direccion):
                     if event.key == pygame.K_RETURN:
                         # Guardar el texto en una variable
                         texto_ingresado = text
-                        ventana_principal(direccion, texto_ingresado)
                         running = False  # Salir del bucle después de presionar Enter
+                        ventana_principal(direccion, texto_ingresado)
                     elif event.key == pygame.K_BACKSPACE:
                         text = text[:-1]
                     else:
@@ -152,7 +150,6 @@ def cargar(direccion):
         ventana.blit(txt_surface, (text_box.x + 5, text_box.y + 5))
         
         pygame.display.flip()
-#C:\Users\ejcan\Documents\GitHub\Intro_Progra_IIProject\Project stuff\Editor.py
 
 #____________________________________________Funciones de ventanas secundarias__________________________________________
 def ventana_sec1():
@@ -335,11 +332,12 @@ def ventana_principal(direccion, nombre):
                 if boton.collidepoint(pos_mouse):
                     running = False
                     escribir_matriz_en_txt(mapa_base, nombre + ".txt")
-                    pygame.QUIT()
+                    #pygame.QUIT()
                 else:
                     botones = crear_botones_colores()
                     detectar_botones(botones)
                     mapa_base = cambio_matriz(mapa_base)
+
 #______________________________________________Inicio pygame____________________________________________________________
 #Inicio pygame
 pygame.init()
