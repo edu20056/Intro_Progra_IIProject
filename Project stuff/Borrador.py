@@ -341,7 +341,7 @@ def ventana_principal(direccion, nombre):
     button_text = font.render("Guardar dibujo y salir.", True, texto_color)
     
     #Funcion para cambiar color de matriz al apretarse.
-    def cambio_matriz(mapa): #ESTO DEBE SER MÉTODO
+    def cambio_matriz(mapa, mapa1): #ESTO DEBE SER MÉTODO
         global n
         pos_mouse = pygame.mouse.get_pos()
         matriz, coords = dibujar_matriz(mapa) 
@@ -350,7 +350,7 @@ def ventana_principal(direccion, nombre):
             if rec.collidepoint(pos_mouse):
                 
                 i = matriz.index(rec)
-                mapa.Draw(mapa, n, coords[i])
+                mapa = mapa1.Draw(mapa, n, coords[i])
 
                 return mapa
         return mapa
@@ -434,7 +434,7 @@ def ventana_principal(direccion, nombre):
                 else:
                     botones = crear_botones_colores()
                     detectar_botones(botones)
-                    mapa_base = cambio_matriz(mapa_base)
+                    mapa_base = cambio_matriz(mapa_base, mapa1)
 
 #______________________________________________Inicio pygame____________________________________________________________
 #Inicio pygame
