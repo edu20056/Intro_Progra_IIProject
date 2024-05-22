@@ -80,11 +80,13 @@ def ventana_menu():
 
 #____________________________________________Funcion Escribir Matriz en txt______________________________________________
 def escribir_matriz_en_txt(matriz, nombre_archivo):
-    with open(nombre_archivo, 'w') as archivo:
+    ruta = r'C:\Users\ejcan\Documents\GitHub\Intro_Progra_IIProject\Project stuff\\' + nombre_archivo
+    with open(ruta, 'w') as archivo:
         for fila in matriz:
             linea = ', '.join(map(str, fila))
             linea_formateada = f'[{linea}]'
             archivo.write(linea_formateada + '\n')
+
 #____________________________________________Ventana Cargar juego__________________________________________________________FALTA
 
 
@@ -150,7 +152,7 @@ def cargar(direccion):
         ventana.blit(txt_surface, (text_box.x + 5, text_box.y + 5))
         
         pygame.display.flip()
-
+#C:\Users\ejcan\Documents\GitHub\Intro_Progra_IIProject\Project stuff\Editor.py
 
 #____________________________________________Funciones de ventanas secundarias__________________________________________
 def ventana_sec1():
