@@ -68,10 +68,10 @@ def ventana_menu():
                     if boton.collidepoint(pos_mouse):
                         if i == 0:
                             direccion = "Project stuff/matriz_base.txt"
-                            cargar(direccion) # type: ignore #Abrir pantalla de dibujo con matriz limpia (matriz_base)
+                            nuevo_dibujo(direccion) # type: ignore #Abrir pantalla de dibujo con matriz limpia (matriz_base)
                             running = False
                         elif i == 1:
-                            print("Aveces") #Abrir ventana donde se podrá escribir un texto que indique la posicion de la matriz que se desee cargar.
+                            cargar() #Abrir ventana donde se podrá escribir un texto que indique la posicion de la matriz que se desee cargar.
                             running = False
                         else:
                             running = False
@@ -87,9 +87,105 @@ def escribir_matriz_en_txt(matriz, nombre_archivo):
             linea_formateada = f'[{linea}]'
             archivo.write(linea_formateada + '\n')
 
-#____________________________________________Ventana Cargar juego__________________________________________________________FALTA
+#____________________________________________Ventana Cargar juego_______________________________________________________
+def cargar():
+    width, height = 600, 400
+
+    ventana = pygame.display.set_mode((width, height))
+    pygame.display.set_caption('Escribir nombre y dibujo por cargar')
+    font = pygame.font.SysFont("Times New Roman", 32)
+    
+    # Colores
+    colors = {
+        0: (255, 255, 255),  # Blanco
+        1: (104, 95, 109),   # Gris
+        2: (0, 255, 0),      # Verde
+        3: (248, 12, 12),    # Rojo
+        4: (237, 248, 12),   # Amarillo
+        5: (12, 237, 248),   # Celeste
+        6: (12, 41, 248),    # Azul
+        7: (151, 9, 242),    # Morado
+        8: (253, 19, 168),   # Rosado
+        9: (0, 0, 0),        # Negro
+    }
+    text_box_nom = pygame.Rect(100, 100, 400, 50)
+    activo_nom = False
+    text_box_dir = pygame.Rect(100, 300, 400, 50)
+    activo_dir = False
+    text_dir = ''
+    text_nom = ''
+    
+    running = True
+    while running:
+        lista_textos =["Coloque aquí el nuevo nombre para el dibujo.","Coloque la dirección de dibujo."]
+        x = 250
+        y_in = 20
+        for i in range(1):
+            y = y_in + i* 200
+            rec = pygame.Rect(x, y, 100,100)
+            button_text = font.render(lista_textos[i], True, colors[9])
+            texto_boton = button_text.get_rect(center = rec.center)
+        for i in range(1,2):
+            y = y_in + i* 200
+            rec = pygame.Rect(x, y, 100,100)
+            button_text2 = font.render(lista_textos[i], True, colors[9])
+            texto_boton1 = button_text2.get_rect(center = rec.center)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # Si el usuario hace clic en la caja de entrada
+                if text_box_nom.collidepoint(event.pos):
+                    activo_nom = True
+                    activo_dir = False
+                elif text_box_dir.collidepoint(event.pos):
+                    activo_dir = True
+                    activo_nom = False
+                else:
+                    activo_dir = False
+                    activo_nom = False
+            color_nom = colors[5] if activo_nom else colors[0]
+            color_dir = colors[3] if activo_dir else colors[7]
+            if event.type == pygame.KEYDOWN:
+
+                if activo_nom:
+                    if event.key == pygame.K_RETURN:
+                        texto_ingresado_nom = text_nom
+                        print(texto_ingresado_nom)
+                    elif event.key == pygame.K_BACKSPACE:
+                        text_nom = text_nom[:-1]
+                    else:
+                        text_nom += event.unicode
+
+                elif activo_dir:
+                    if event.key == pygame.K_RETURN:
+                        texto_ingresado_dir = text_dir
+                        print(texto_ingresado_dir)
+                    elif event.key == pygame.K_BACKSPACE:
+                        text_dir = text_dir[:-1]
+                    else:
+                        text_dir += event.unicode
+            # Rellenar la ventana
+        ventana.fill((18, 253, 189))
+        
+        ventana.blit(button_text, texto_boton)
+        ventana.blit(button_text2, texto_boton1)
+        # Dibujar la caja de texto
+        pygame.draw.rect(ventana, color_nom, text_box_nom, 2)
+        pygame.draw.rect(ventana, color_dir, text_box_dir, 2)
+        
+        # Renderizar el texto
+        txt_surface = font.render(text_nom, True, colors[9])
+        ventana.blit(txt_surface, (text_box_nom.x + 5, text_box_nom.y + 5))
+
+        # Renderizar el texto
+        txt_surface = font.render(text_dir, True, colors[9])
+        ventana.blit(txt_surface, (text_box_dir.x + 5, text_box_dir.y + 5))
+        
+        pygame.display.flip()
 #____________________________________________Ventana Nuevo Juego________________________________________________________
-def cargar(direccion):
+def nuevo_dibujo(direccion):
     width, height = 600, 400
 
     ventana = pygame.display.set_mode((width, height))
@@ -237,8 +333,8 @@ def ventana_principal(direccion, nombre):
     }
 
     #Boton de pygame. Configura la fuente y el texto del botón
-    boton = pygame.Rect(450,650, 300,100) #x , y , altura, ancho
-    font = pygame.font.SysFont("Times New Roman", 40)
+    boton = pygame.Rect(300,650, 400,70) #x , y , altura, ancho
+    font = pygame.font.SysFont("Times New Roman", 30)
     button_text = font.render("Guardar dibujo y salir.", True, texto_color)
     
     #Funcion para cambiar color de matriz al apretarse.
@@ -332,7 +428,6 @@ def ventana_principal(direccion, nombre):
                 if boton.collidepoint(pos_mouse):
                     running = False
                     escribir_matriz_en_txt(mapa_base, nombre + ".txt")
-                    #pygame.QUIT()
                 else:
                     botones = crear_botones_colores()
                     detectar_botones(botones)
