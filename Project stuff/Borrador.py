@@ -150,23 +150,26 @@ def cargar():
             if event.type == pygame.KEYDOWN:
 
                 if activo_nom:
-                    if event.key == pygame.K_RETURN:
-                        texto_ingresado_nom = text_nom
-                        print(texto_ingresado_nom)
-                    elif event.key == pygame.K_BACKSPACE:
+                    texto_ingresado_nom = text_nom
+                    if event.key == pygame.K_BACKSPACE:
                         text_nom = text_nom[:-1]
                     else:
                         text_nom += event.unicode
 
                 elif activo_dir:
-                    if event.key == pygame.K_RETURN:
-                        texto_ingresado_dir = text_dir
-                        print(texto_ingresado_dir)
-                    elif event.key == pygame.K_BACKSPACE:
+                    texto_ingresado_dir = text_dir
+                    if event.key == pygame.K_BACKSPACE:
                         text_dir = text_dir[:-1]
                     else:
                         text_dir += event.unicode
-            # Rellenar la ventana
+                elif event.key == pygame.K_RETURN: #C:\Users\ejcan\Documents\GitHub\Intro_Progra_IIProject\Project stuff\Guardado.txt
+                    base_path = r"C:\Users\ejcan\Documents\GitHub\Intro_Progra_IIProject\Project stuff\\"
+                    direccion = base_path + text_dir + ".txt"
+                    print(direccion)
+                    ventana_principal(direccion,text_nom)
+                    running = False
+
+        # Rellenar la ventana
         ventana.fill((18, 253, 189))
         
         ventana.blit(button_text, texto_boton)
@@ -184,6 +187,7 @@ def cargar():
         ventana.blit(txt_surface, (text_box_dir.x + 5, text_box_dir.y + 5))
         
         pygame.display.flip()
+
 #____________________________________________Ventana Nuevo Juego________________________________________________________
 def nuevo_dibujo(direccion):
     width, height = 600, 400
