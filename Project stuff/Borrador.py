@@ -2,7 +2,6 @@ import pygame
 from Editor import editor
 #import time
 
-
 #____________________________________________Variables globales_________________________________________________________
 global n
 n = 0
@@ -162,7 +161,7 @@ def cargar():
                         text_dir = text_dir[:-1]
                     else:
                         text_dir += event.unicode
-                elif event.key == pygame.K_RETURN: #C:\Users\ejcan\Documents\GitHub\Intro_Progra_IIProject\Project stuff\Guardado.txt
+                elif event.key == pygame.K_RETURN:
                     base_path = r"C:\Users\ejcan\Documents\GitHub\Intro_Progra_IIProject\Project stuff\\"
                     direccion = base_path + text_dir + ".txt"
                     print(direccion)
@@ -342,19 +341,19 @@ def ventana_principal(direccion, nombre):
     button_text = font.render("Guardar dibujo y salir.", True, texto_color)
     
     #Funcion para cambiar color de matriz al apretarse.
-    def cambio_matriz(mapa):
+    def cambio_matriz(mapa): #ESTO DEBE SER MÉTODO
         global n
         pos_mouse = pygame.mouse.get_pos()
         matriz, coords = dibujar_matriz(mapa) 
 
         for rec in matriz:
             if rec.collidepoint(pos_mouse):
+                
                 i = matriz.index(rec)
-                row, col = coords[i]
-                mapa[row][col] = n
+                mapa.Draw(mapa, n, coords[i])
+
                 return mapa
         return mapa
-
         
     #Funcion para detectar click en boton
     def detectar_botones(botones):
