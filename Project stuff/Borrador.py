@@ -149,14 +149,12 @@ def cargar():
             if event.type == pygame.KEYDOWN:
 
                 if activo_nom:
-                    texto_ingresado_nom = text_nom
                     if event.key == pygame.K_BACKSPACE:
                         text_nom = text_nom[:-1]
                     else:
                         text_nom += event.unicode
 
                 elif activo_dir:
-                    texto_ingresado_dir = text_dir
                     if event.key == pygame.K_BACKSPACE:
                         text_dir = text_dir[:-1]
                     else:
@@ -304,7 +302,7 @@ def ventana_sec1():
                     #ventana_principal()
 
 #____________________________________________Ventana Principal__________________________________________________________
-def ventana_principal(direccion, nombre):
+def ventana_principal(direccion, nombre): 
     #Altura y ancho
     width, heigth = 800,800
 
@@ -435,6 +433,7 @@ def ventana_principal(direccion, nombre):
                     botones = crear_botones_colores()
                     detectar_botones(botones)
                     mapa_base = cambio_matriz(mapa_base, mapa1)
+                    mapa1.mostrar_matriz_numérica(mapa_base)
 
 #______________________________________________Inicio pygame____________________________________________________________
 #Inicio pygame

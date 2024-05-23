@@ -32,5 +32,8 @@ class editor:
     def Draw(self, matrix, color, coords) :
         row, col = coords
         matrix[row][col] = color
-        return matrix #self.cargar_matriz()
+        return matrix 
+    
+    def mostrar_matriz_numérica(self, matriz):
+        print(matriz)
         
