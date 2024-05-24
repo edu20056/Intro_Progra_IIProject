@@ -61,5 +61,16 @@ class editor:
         matrix[row][col] = color
         return matrix 
     
+    #Método para hacer negativo. 
+    def negativo(self, matriz):
+        res = []
+        lista_aux = []
+        for i in matriz:
+            for j in i:
+                x = 9 - j
+                lista_aux.append(x)
+            res.append(lista_aux)
+            lista_aux = []
+        return res
 
 

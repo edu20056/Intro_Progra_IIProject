@@ -363,8 +363,13 @@ def ventana_principal(direccion, nombre):
     boton_vert = pygame.Rect(600,450, 150, 70)
     vert_text = font.render("Girar Vertical", True, texto_color)
 
+    #Boton negativo de dibujo.
+    boton_neg = pygame.Rect(600, 550, 150, 70)
+    neg_text = font.render("Negativo", True, texto_color)
+
+
     #Lista de botones de dibujo
-    lista_botones = [boton, boton_ver_matriz, boton_hide_matriz, boton_der,boton_izq,boton_vert, boton_hor]
+    lista_botones = [boton, boton_ver_matriz, boton_hide_matriz, boton_der,boton_izq,boton_vert, boton_hor, boton_neg]
 
     #Funcion para cambiar color de matriz al apretarse.
     def cambio_matriz(mapa, mapa1): 
@@ -477,6 +482,7 @@ def ventana_principal(direccion, nombre):
         pygame.draw.rect(ventana, color_negro, boton_vert, 1)
         pygame.draw.rect(ventana, color_negro, boton_der, 1)
         pygame.draw.rect(ventana, color_negro, boton_izq, 1)
+        pygame.draw.rect(ventana, color_negro, boton_neg, 1)
 
         #Mapa dentro de while para que se vaya actualizando
         dibujar_matriz(mapa_base)
@@ -489,7 +495,9 @@ def ventana_principal(direccion, nombre):
         texto_der = der_text.get_rect(center=boton_der.center)
         texto_hor = hor_text.get_rect(center=boton_hor.center)
         texto_vert = vert_text.get_rect(center=boton_vert.center)
+        texti_neg = neg_text.get_rect(center = boton_neg.center)
 
+        ventana.blit(neg_text, texti_neg)
         ventana.blit(izq_text, texto_izq)
         ventana.blit(der_text, texto_der)
         ventana.blit(hor_text, texto_hor)
@@ -528,7 +536,11 @@ def ventana_principal(direccion, nombre):
                 elif boton_hor.collidepoint(pos_mouse):
                     mapa_base = mapa1.rotar_horizontal(mapa_base)
                     verifica_estado_matriz_num(estado_matriz_num, mapa_base)
-                    
+                
+                elif boton_neg.collidepoint(pos_mouse):
+                    mapa_base = mapa1.negativo(mapa_base)
+                    verifica_estado_matriz_num(estado_matriz_num, mapa_base)
+
                 else:
                     botones = crear_botones_colores()
                     detectar_botones(botones)
