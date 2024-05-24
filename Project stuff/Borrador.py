@@ -347,8 +347,24 @@ def ventana_principal(direccion, nombre):
     boton_hide_matriz = pygame.Rect(320, 650, 240, 70 )
     texto_hide_matriz = font.render("Esconder matriz numérica.", True, texto_color)
 
+    #Boton girar izquierda
+    boton_izq = pygame.Rect(600, 150, 150,70)
+    izq_text = font.render("Girar Izquierda", True, texto_color)
+
+    #Boton girar derecha
+    boton_der = pygame.Rect(600, 250, 150, 70)
+    der_text = font.render("Girar Derecha", True, texto_color)
+
+    #Boton girar horizontal
+    boton_hor = pygame.Rect(600, 350, 150, 70)
+    hor_text = font.render("Girar Horizontal", True, texto_color)
+
+    #Boton girar vertocal
+    boton_vert = pygame.Rect(600,450, 150, 70)
+    vert_text = font.render("Girar Vertical", True, texto_color)
+
     #Lista de botones de dibujo
-    lista_botones = [boton, boton_ver_matriz, boton_hide_matriz]
+    lista_botones = [boton, boton_ver_matriz, boton_hide_matriz, boton_der,boton_izq,boton_vert, boton_hor]
 
     #Funcion para cambiar color de matriz al apretarse.
     def cambio_matriz(mapa, mapa1): 
@@ -430,6 +446,12 @@ def ventana_principal(direccion, nombre):
                 lista_matriz.append(rec)
 
         return lista_matriz
+    def verifica_estado_matriz_num(boolean, mapa):
+        if boolean:
+            mostrar_numeros(mapa, estado_matriz_num)
+        else:
+            mostrar_numeros(mapa, estado_matriz_num)
+
 
     #Se deja mapa1 afuera de while para que se pueda modificar la lista mapa_base
     mapa1 = editor(direccion, nombre, "en proceso") 
@@ -451,6 +473,10 @@ def ventana_principal(direccion, nombre):
         pygame.draw.rect(ventana, color_negro, boton, 1)
         pygame.draw.rect(ventana, color_negro, boton_ver_matriz, 1)
         pygame.draw.rect(ventana, color_negro, boton_hide_matriz, 1)
+        pygame.draw.rect(ventana, color_negro, boton_hor, 1)
+        pygame.draw.rect(ventana, color_negro, boton_vert, 1)
+        pygame.draw.rect(ventana, color_negro, boton_der, 1)
+        pygame.draw.rect(ventana, color_negro, boton_izq, 1)
 
         #Mapa dentro de while para que se vaya actualizando
         dibujar_matriz(mapa_base)
@@ -459,7 +485,15 @@ def ventana_principal(direccion, nombre):
         texto_boton = button_text.get_rect(center=boton.center)
         texto_ver = texto_ver_matriz.get_rect(center=boton_ver_matriz.center)
         texto_hide = texto_hide_matriz.get_rect(center = boton_hide_matriz.center)
+        texto_izq = izq_text.get_rect(center=boton_izq.center)
+        texto_der = der_text.get_rect(center=boton_der.center)
+        texto_hor = hor_text.get_rect(center=boton_hor.center)
+        texto_vert = vert_text.get_rect(center=boton_vert.center)
 
+        ventana.blit(izq_text, texto_izq)
+        ventana.blit(der_text, texto_der)
+        ventana.blit(hor_text, texto_hor)
+        ventana.blit(vert_text, texto_vert)
         ventana.blit(texto_hide_matriz, texto_hide)
         ventana.blit(button_text, texto_boton)
         ventana.blit(texto_ver_matriz, texto_ver)
@@ -474,17 +508,32 @@ def ventana_principal(direccion, nombre):
                 elif boton_ver_matriz.collidepoint(pos_mouse):
                     estado_matriz_num = True
                     mostrar_numeros(mapa_base, estado_matriz_num)
+
                 elif boton_hide_matriz.collidepoint(pos_mouse):
                     estado_matriz_num = False
                     mostrar_numeros(mapa_base, estado_matriz_num)
+
+                elif boton_der.collidepoint(pos_mouse):
+                    mapa_base = mapa1.rotar_derecha(mapa_base)
+                    verifica_estado_matriz_num(estado_matriz_num, mapa_base)
+
+                elif boton_izq.collidepoint(pos_mouse):
+                    mapa_base = mapa1.rotar_izquierda(mapa_base)
+                    verifica_estado_matriz_num(estado_matriz_num, mapa_base)
+                
+                elif boton_vert.collidepoint(pos_mouse):
+                    mapa_base = mapa1.rotar_vertical(mapa_base)
+                    verifica_estado_matriz_num(estado_matriz_num, mapa_base)
+
+                elif boton_hor.collidepoint(pos_mouse):
+                    mapa_base = mapa1.rotar_horizontal(mapa_base)
+                    verifica_estado_matriz_num(estado_matriz_num, mapa_base)
+                    
                 else:
                     botones = crear_botones_colores()
                     detectar_botones(botones)
                     mapa_base = cambio_matriz(mapa_base, mapa1)
-                    if estado_matriz_num:
-                        mostrar_numeros(mapa_base, estado_matriz_num)
-                    else:
-                        mostrar_numeros(mapa_base, estado_matriz_num)
+                    verifica_estado_matriz_num(estado_matriz_num, mapa_base)
 
 
 #______________________________________________Inicio pygame____________________________________________________________
