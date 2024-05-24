@@ -1,6 +1,5 @@
 import pygame
 from Editor import editor
-#import time
 
 #____________________________________________Variables globales_________________________________________________________
 global n
@@ -335,16 +334,16 @@ def ventana_principal(direccion, nombre):
     }
 
     #Boton para salir y guardar.
-    boton = pygame.Rect(600,650, 250,70) #x , y , altura, ancho
+    boton_fin = pygame.Rect(510,650, 250,70) #x , y , altura, ancho
     font = pygame.font.SysFont("Times New Roman", 20)
     button_text = font.render("Guardar dibujo y salir.", True, texto_color)
     
     #Boton para mostrar la matriz numérica actual.
-    boton_ver_matriz = pygame.Rect(80, 650, 200, 70 )
+    boton_ver_matriz = pygame.Rect(50, 650, 200, 70 )
     texto_ver_matriz = font.render("Ver matriz numérica.", True, texto_color)
 
     #Boton para esconder la matriz numérica actual.
-    boton_hide_matriz = pygame.Rect(320, 650, 240, 70 )
+    boton_hide_matriz = pygame.Rect(260, 650, 240, 70 )
     texto_hide_matriz = font.render("Esconder matriz numérica.", True, texto_color)
 
     #Boton girar izquierda
@@ -367,10 +366,22 @@ def ventana_principal(direccion, nombre):
     boton_neg = pygame.Rect(600, 550, 150, 70)
     neg_text = font.render("Negativo", True, texto_color)
 
+    #Boton cuadrado
+    boton_cuadr = pygame.Rect(770,650, 150,70)
+    cuadr_text = font.render("Cuadrado", True, texto_color)
+
+    #Boton rombo
+    boton_romb = pygame.Rect(950,650, 150,70)
+    romb_text = font.render("Rombo", True, texto_color)
 
     #Lista de botones de dibujo
-    lista_botones = [boton, boton_ver_matriz, boton_hide_matriz, boton_der,boton_izq,boton_vert, boton_hor, boton_neg]
+    lista_botones = [boton_fin, boton_ver_matriz, boton_hide_matriz, boton_der,boton_izq,boton_vert, boton_hor, boton_neg, boton_romb, boton_cuadr]
 
+    #Lista de botones asociados al texto.
+    botones_y_textos = [(boton_fin, button_text),(boton_ver_matriz, texto_ver_matriz),(boton_hide_matriz, texto_hide_matriz),
+        (boton_izq, izq_text),(boton_der, der_text),(boton_hor, hor_text),(boton_vert, vert_text),(boton_neg, neg_text),
+        (boton_cuadr, cuadr_text),(boton_romb, romb_text)]
+    
     #Funcion para cambiar color de matriz al apretarse.
     def cambio_matriz(mapa, mapa1): 
         global n
@@ -474,45 +485,24 @@ def ventana_principal(direccion, nombre):
             else:
                 pygame.draw.rect(ventana,boton_color, i)
 
-        # Dibuja el borde del botón
-        pygame.draw.rect(ventana, color_negro, boton, 1)
-        pygame.draw.rect(ventana, color_negro, boton_ver_matriz, 1)
-        pygame.draw.rect(ventana, color_negro, boton_hide_matriz, 1)
-        pygame.draw.rect(ventana, color_negro, boton_hor, 1)
-        pygame.draw.rect(ventana, color_negro, boton_vert, 1)
-        pygame.draw.rect(ventana, color_negro, boton_der, 1)
-        pygame.draw.rect(ventana, color_negro, boton_izq, 1)
-        pygame.draw.rect(ventana, color_negro, boton_neg, 1)
 
         #Mapa dentro de while para que se vaya actualizando
         dibujar_matriz(mapa_base)
 
-        #Colocar textos de botones
-        texto_boton = button_text.get_rect(center=boton.center)
-        texto_ver = texto_ver_matriz.get_rect(center=boton_ver_matriz.center)
-        texto_hide = texto_hide_matriz.get_rect(center = boton_hide_matriz.center)
-        texto_izq = izq_text.get_rect(center=boton_izq.center)
-        texto_der = der_text.get_rect(center=boton_der.center)
-        texto_hor = hor_text.get_rect(center=boton_hor.center)
-        texto_vert = vert_text.get_rect(center=boton_vert.center)
-        texti_neg = neg_text.get_rect(center = boton_neg.center)
-
-        ventana.blit(neg_text, texti_neg)
-        ventana.blit(izq_text, texto_izq)
-        ventana.blit(der_text, texto_der)
-        ventana.blit(hor_text, texto_hor)
-        ventana.blit(vert_text, texto_vert)
-        ventana.blit(texto_hide_matriz, texto_hide)
-        ventana.blit(button_text, texto_boton)
-        ventana.blit(texto_ver_matriz, texto_ver)
+        #Dibuja el borde de cada botón y coloca el texto correspondiente
+        for boton, texto in botones_y_textos:
+            pygame.draw.rect(ventana, color_negro, boton, 1)
+            texto_rect = texto.get_rect(center=boton.center)
+            ventana.blit(texto, texto_rect)
 
         crear_botones_colores()
    
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if boton.collidepoint(pos_mouse):
+                if boton_fin.collidepoint(pos_mouse):
                     running = False
                     escribir_matriz_en_txt(mapa_base, nombre + ".txt")
+                    ventana_menu()
                 elif boton_ver_matriz.collidepoint(pos_mouse):
                     estado_matriz_num = True
                     mostrar_numeros(mapa_base, estado_matriz_num)
@@ -539,6 +529,14 @@ def ventana_principal(direccion, nombre):
                 
                 elif boton_neg.collidepoint(pos_mouse):
                     mapa_base = mapa1.negativo(mapa_base)
+                    verifica_estado_matriz_num(estado_matriz_num, mapa_base)
+                
+                elif boton_romb.collidepoint(pos_mouse):
+                    mapa_base = mapa1.rombo(mapa_base, n)
+                    verifica_estado_matriz_num(estado_matriz_num, mapa_base)
+                
+                elif boton_cuadr.collidepoint(pos_mouse):
+                    mapa_base = mapa1.cuadrado(mapa_base ,n)
                     verifica_estado_matriz_num(estado_matriz_num, mapa_base)
 
                 else:
