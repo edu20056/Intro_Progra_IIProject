@@ -316,7 +316,7 @@ def ventana_principal(direccion, nombre):
     ventana.fill((214, 88, 180)) #Color de ventana de fondo
     boton_color = (88,214,141)
     boton_color_encima = (20,106,56)
-    texto_color = (255,255,255)
+    texto_color = (0,0,0)
     color_negro = (0,0,0)
 
     #Colores matriz
@@ -332,56 +332,100 @@ def ventana_principal(direccion, nombre):
         8: (253, 19, 168),  #Rosado
         9: (0, 0, 0),  #Negro
     }
+    # Lista de botones asociados a las imágenes
+
+    #Font texto
+    font = pygame.font.SysFont("Times New Roman", 20)
 
     #Boton para salir y guardar.
-    boton_fin = pygame.Rect(510,650, 250,70) #x , y , altura, ancho
-    font = pygame.font.SysFont("Times New Roman", 20)
+    boton_fin = pygame.Rect(910,650, 250,70) #x , y , altura, ancho
     button_text = font.render("Guardar y volver al menú", True, texto_color)
     
     #Boton para mostrar la matriz numérica actual.
     boton_ver_matriz = pygame.Rect(50, 650, 200, 70 )
-    texto_ver_matriz = font.render("Ver matriz numérica", True, texto_color)
 
     #Boton para esconder la matriz numérica actual.
-    boton_hide_matriz = pygame.Rect(260, 650, 240, 70 )
-    texto_hide_matriz = font.render("Esconder matriz numérica", True, texto_color)
+    boton_hide_matriz = pygame.Rect(260, 650, 200, 70 )
 
     #Boton girar izquierda
-    boton_izq = pygame.Rect(600, 150, 150,70)
-    izq_text = font.render("Girar Izquierda", True, texto_color)
+    boton_izq = pygame.Rect(540, 150, 100,75)
 
     #Boton girar derecha
-    boton_der = pygame.Rect(600, 250, 150, 70)
-    der_text = font.render("Girar Derecha", True, texto_color)
+    boton_der = pygame.Rect(540, 250, 100, 75)
 
     #Boton girar horizontal
-    boton_hor = pygame.Rect(600, 350, 150, 70)
-    hor_text = font.render("Girar Horizontal", True, texto_color)
+    boton_hor = pygame.Rect(540, 350, 100, 75)
 
-    #Boton girar vertocal
-    boton_vert = pygame.Rect(600,450, 150, 70)
-    vert_text = font.render("Girar Vertical", True, texto_color)
+    #Boton girar vertical
+    boton_vert = pygame.Rect(540,450, 100, 75)
 
     #Boton negativo de dibujo.
-    boton_neg = pygame.Rect(600, 550, 150, 70)
+    boton_neg = pygame.Rect(540, 550, 100, 75)
     neg_text = font.render("Negativo", True, texto_color)
 
+    #Boton zoom in
+    boton_zoomin = pygame.Rect(660, 150, 100 , 75)
+
+    #Boton zoom out
+    boton_zoomout = pygame.Rect(660, 250, 100, 75)
+
+    #Boton ASCI ver
+    boton_ascii_ver = pygame.Rect(660, 350, 100 ,75)
+    
+    #Boton ASCI ver
+    boton_ascii_hide = pygame.Rect(660, 450, 100 ,80)
+
     #Boton cuadrado
-    boton_cuadr = pygame.Rect(770,650, 150,70)
-    cuadr_text = font.render("Cuadrado", True, texto_color)
+    boton_cuadr = pygame.Rect(470,650, 150,70) 
 
     #Boton rombo
-    boton_romb = pygame.Rect(950,650, 150,70)
-    romb_text = font.render("Rombo", True, texto_color)
+    boton_romb = pygame.Rect(630,650, 150,70)
+
+    #Boton alto contraste
+    boton_contr = pygame.Rect(785, 650, 120, 70)
+    contraste_text = font.render("Alto contraste", True, texto_color)
+
+    #Boton cerrar imagen.
+    boton_cerrar = pygame.Rect(660, 550, 100 ,75)
 
     #Lista de botones de dibujo
-    lista_botones = [boton_fin, boton_ver_matriz, boton_hide_matriz, boton_der,boton_izq,boton_vert, boton_hor, boton_neg, boton_romb, boton_cuadr]
+    lista_botones = [boton_fin, boton_ver_matriz, boton_hide_matriz, boton_der,boton_izq,boton_vert, boton_hor, boton_neg, boton_romb, boton_cuadr, boton_cerrar, boton_zoomin, boton_zoomout, boton_ascii_hide, boton_ascii_ver, boton_contr]
+
+    #Listas de botones alineados horizontalmente y verticalmente. Se necesita para la colocacion iterativa de imagenes
+    lista_botones_con_imagenes = [ boton_izq, boton_der, boton_hor, boton_vert, boton_ver_matriz, boton_hide_matriz, boton_cuadr, boton_romb, boton_cerrar, boton_zoomin ,boton_zoomout, boton_ascii_hide, boton_ascii_ver]
 
     #Lista de botones asociados al texto.
-    botones_y_textos = [(boton_fin, button_text),(boton_ver_matriz, texto_ver_matriz),(boton_hide_matriz, texto_hide_matriz),
-        (boton_izq, izq_text),(boton_der, der_text),(boton_hor, hor_text),(boton_vert, vert_text),(boton_neg, neg_text),
-        (boton_cuadr, cuadr_text),(boton_romb, romb_text)]
+    botones_y_textos = [(boton_fin, button_text),(boton_neg, neg_text), (boton_contr, contraste_text)]
     
+    imagenes = [
+        #Listos
+            #Verticales
+        pygame.image.load("Project stuff/Imagenes/izquierda.png"),
+        pygame.image.load("Project stuff/Imagenes/derecga.png"),
+        pygame.image.load("Project stuff/Imagenes/flecha_hor.png"),
+        pygame.image.load("Project stuff/Imagenes/flecha_vert.png"),
+            #Horizontales
+        pygame.image.load("Project stuff/Imagenes/ver_num.png"),
+        pygame.image.load("Project stuff/Imagenes/quitar_num.png"),
+        pygame.image.load("Project stuff/Imagenes/cuadrado.png"),
+        pygame.image.load("Project stuff/Imagenes/rombo.png"),
+        pygame.image.load("Project stuff/Imagenes/borrador.png"),
+
+        #Faltan
+        pygame.image.load("Project stuff/Imagenes/lupa_mas.png"),
+        pygame.image.load("Project stuff/Imagenes/lupa_menos.png"),  
+        pygame.image.load("Project stuff/Imagenes/ASCII.png"),      
+        pygame.image.load("Project stuff/Imagenes/ASCII_quit.png")
+    ]
+    def rec_imagenes(images):
+        rec_list = []
+        for i in images:
+            rec_im = i.get_rect()
+            rec_list.append(rec_im)
+        return rec_list
+    
+    lista_rect = rec_imagenes(imagenes)
+
     #Funcion para cambiar color de matriz al apretarse.
     def cambio_matriz(mapa, mapa1): 
         global n
@@ -403,7 +447,6 @@ def ventana_principal(direccion, nombre):
         pos_mouse = pygame.mouse.get_pos()
         for i, boton in enumerate(botones):
             if boton.collidepoint(pos_mouse):
-                print(i)
                 n = i 
     
     #Crea botones en la pantalla
@@ -438,6 +481,14 @@ def ventana_principal(direccion, nombre):
 
         return lista_matriz, cords_matriz
     
+
+    #Coloca imagenes verticales
+    def colocar_imagenes(lista, images, rects):
+        i = 0
+        while i < 13:
+            ventana.blit(images[i], (lista[i].centerx - rects[i].width // 2 , lista[i].centery - rects[i].height // 2 ))
+            i += 1
+
     def mostrar_numeros(map, boleano):
         if boleano:
             color = (0,0,0)
@@ -471,11 +522,13 @@ def ventana_principal(direccion, nombre):
     estado_matriz_num = False
     running = True
     mouse_apretado = False
+
+
     while running:
         pygame.display.flip() #Actualizar pantalla
         
         pos_mouse = pygame.mouse.get_pos()
-        
+
         for i in lista_botones:
             if i.collidepoint(pos_mouse):
                 pygame.draw.rect(ventana, boton_color_encima, i)
@@ -492,6 +545,8 @@ def ventana_principal(direccion, nombre):
             texto_rect = texto.get_rect(center=boton.center)
             ventana.blit(texto, texto_rect)
 
+        for boton in lista_botones:
+            pygame.draw.rect(ventana, color_negro, boton, 1)
         crear_botones_colores()
    
         for event in pygame.event.get():
@@ -502,7 +557,6 @@ def ventana_principal(direccion, nombre):
                     ventana_menu()
                 elif boton_ver_matriz.collidepoint(pos_mouse):
                     estado_matriz_num = True
-                    mapa_base = mapa1.ASCII_ART(mapa_base)
                     mostrar_numeros(mapa_base, estado_matriz_num)
 
                 elif boton_hide_matriz.collidepoint(pos_mouse):
@@ -553,6 +607,8 @@ def ventana_principal(direccion, nombre):
             detectar_botones(botones)
             mapa_base = cambio_matriz(mapa_base, mapa1)
             verifica_estado_matriz_num(estado_matriz_num, mapa_base)
+        
+        colocar_imagenes(lista_botones_con_imagenes, imagenes, lista_rect)
 
 #______________________________________________Inicio pygame____________________________________________________________
 #Inicio pygame
