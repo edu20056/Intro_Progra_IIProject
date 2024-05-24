@@ -336,15 +336,15 @@ def ventana_principal(direccion, nombre):
     #Boton para salir y guardar.
     boton_fin = pygame.Rect(510,650, 250,70) #x , y , altura, ancho
     font = pygame.font.SysFont("Times New Roman", 20)
-    button_text = font.render("Guardar y volver al menu.", True, texto_color)
+    button_text = font.render("Guardar y volver al menú", True, texto_color)
     
     #Boton para mostrar la matriz numérica actual.
     boton_ver_matriz = pygame.Rect(50, 650, 200, 70 )
-    texto_ver_matriz = font.render("Ver matriz numérica.", True, texto_color)
+    texto_ver_matriz = font.render("Ver matriz numérica", True, texto_color)
 
     #Boton para esconder la matriz numérica actual.
     boton_hide_matriz = pygame.Rect(260, 650, 240, 70 )
-    texto_hide_matriz = font.render("Esconder matriz numérica.", True, texto_color)
+    texto_hide_matriz = font.render("Esconder matriz numérica", True, texto_color)
 
     #Boton girar izquierda
     boton_izq = pygame.Rect(600, 150, 150,70)
@@ -474,6 +474,7 @@ def ventana_principal(direccion, nombre):
     mapa_base = mapa1.cargar_matriz()
     estado_matriz_num = False
     running = True
+    mouse_apretado = False
     while running:
         pygame.display.flip() #Actualizar pantalla
         
@@ -539,11 +540,27 @@ def ventana_principal(direccion, nombre):
                     mapa_base = mapa1.cuadrado(mapa_base ,n)
                     verifica_estado_matriz_num(estado_matriz_num, mapa_base)
 
-                else:
+                if event.button == 1:  
+                    mouse_apretado = True
                     botones = crear_botones_colores()
                     detectar_botones(botones)
                     mapa_base = cambio_matriz(mapa_base, mapa1)
                     verifica_estado_matriz_num(estado_matriz_num, mapa_base)
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1: 
+                    mouse_apretado = False
+
+        if mouse_apretado:
+            botones = crear_botones_colores()
+            detectar_botones(botones)
+            mapa_base = cambio_matriz(mapa_base, mapa1)
+            verifica_estado_matriz_num(estado_matriz_num, mapa_base)
+                #else:
+                    #botones = crear_botones_colores()
+                    #detectar_botones(botones)
+                   # mapa_base = cambio_matriz(mapa_base, mapa1)
+                  #  verifica_estado_matriz_num(estado_matriz_num, mapa_base)
 
 
 #______________________________________________Inicio pygame____________________________________________________________
