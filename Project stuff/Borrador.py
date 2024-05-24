@@ -421,10 +421,6 @@ def ventana_principal(direccion, nombre):
             botones.append(rec_base)
 
         return botones
-    
-    #Esta funcion contendrá botones para crear circulo, cuadradro, el borrador (color blanco), zoom in , zoom out, transpuesta
-    def botones_funcionales():
-        bot_funcionales = [] 
 
     def dibujar_matriz(map):
         lista_matriz = [] #Lista con elementos de matriz
@@ -506,6 +502,7 @@ def ventana_principal(direccion, nombre):
                     ventana_menu()
                 elif boton_ver_matriz.collidepoint(pos_mouse):
                     estado_matriz_num = True
+                    mapa_base = mapa1.ASCII_ART(mapa_base)
                     mostrar_numeros(mapa_base, estado_matriz_num)
 
                 elif boton_hide_matriz.collidepoint(pos_mouse):
@@ -556,12 +553,6 @@ def ventana_principal(direccion, nombre):
             detectar_botones(botones)
             mapa_base = cambio_matriz(mapa_base, mapa1)
             verifica_estado_matriz_num(estado_matriz_num, mapa_base)
-                #else:
-                    #botones = crear_botones_colores()
-                    #detectar_botones(botones)
-                   # mapa_base = cambio_matriz(mapa_base, mapa1)
-                  #  verifica_estado_matriz_num(estado_matriz_num, mapa_base)
-
 
 #______________________________________________Inicio pygame____________________________________________________________
 #Inicio pygame

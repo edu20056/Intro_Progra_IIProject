@@ -106,3 +106,21 @@ class editor:
                 matriz[i][11] = color
         return matriz
 
+    #ASCII-ART
+    def ASCII_ART(self, matriz):
+        codif = {
+            0: " ",
+            1: ".",
+            2: ":",
+            3: "-",
+            4: "=",
+            5: "¡",
+            6: "&",
+            7: "$",
+            8: "%",
+            9: "@"
+        }
+        for i in range(len(matriz)):
+            for j in range(len(matriz[0])):
+                    matriz[i][j] = codif[matriz[i][j]]
+        return matriz
