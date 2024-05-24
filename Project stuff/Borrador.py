@@ -336,7 +336,7 @@ def ventana_principal(direccion, nombre):
     #Boton para salir y guardar.
     boton_fin = pygame.Rect(510,650, 250,70) #x , y , altura, ancho
     font = pygame.font.SysFont("Times New Roman", 20)
-    button_text = font.render("Guardar dibujo y salir.", True, texto_color)
+    button_text = font.render("Guardar y volver al menu.", True, texto_color)
     
     #Boton para mostrar la matriz numérica actual.
     boton_ver_matriz = pygame.Rect(50, 650, 200, 70 )
