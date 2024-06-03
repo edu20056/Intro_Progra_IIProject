@@ -34,7 +34,7 @@ The Pixel Art Editor provides several keyboard shortcuts to enhance your editing
 | Number Keys (0-9) | Change the current drawing color. |
 | Ctrl + Plus (+) | Zoom in. |
 | Ctrl + Minus (-) | Zoom out. |
-| Ctrl + SPACE  | Erase canvas. |
+| Ctrl + SPACE  | Cover / Erase all canvas. |
 | Ctrl + Z      | Undo changes. |
 | Ctrl + S      | Save the current image. |
 | Ctrl + O      | Open a new image file. |
